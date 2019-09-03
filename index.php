@@ -33,14 +33,14 @@ class ActonAPI{
 		$this->emailAddress 			= $_POST['emailaddress'];
 		$this->firstName 				= ( isset($_POST['firstname']) ) ? $_POST['firstname'] : ' ';
 		$this->lastName 				= ( isset($_POST['lastname']) ) ? $_POST['lastname'] : ' ' ;
-		$this->zipCode 					= ( isset($_POST['zipcode']) ) ? $_POST['zipcode'] : ' ';
+		$this->zipCode 					= ( isset($_POST['Zipcode']) ) ? $_POST['Zipcode'] : ' ';
 		$this->Phone 					= ( isset($_POST['phone']) ) ? $_POST['phone'] : ' ';
 		$this->companyAddress			= ( isset($_POST['address']) ) ? $_POST['address'] : ' ' ;
 		$this->organization 			= ( isset($_POST['organization']) ) ? $_POST['organization'] : ' ' ;
 		$this->state 					= ( isset($_POST['state']) ) ? $_POST['state'] : ' ' ;
 		$this->city 					= ( isset($_POST['city']) ) ? $_POST['city'] : ' ' ;
 		$this->feedbackType 			= ( isset($_POST['feedbackType']) ) ? $_POST['feedbackType'] : ' ' ;
-		$this->feedback 				= ( isset($_POST['feedback']) ) ? $_POST['feedback'] : ' ' ;
+		$this->subscribe 				= ( isset($_POST['subscribe']) ) ? $_POST['subscribe'] : ' ' ;
 		
 	}	
 	
@@ -127,26 +127,26 @@ class ActonAPI{
 		return $this->CURLProcessBearer($this->ACTONUPSERTCONTACTURL.$this->emailAddress, "PUT", $data); 
 	}
 	
-	function upsertContactSubscribe(){
-		
-		$data =  json_encode(
-				array( 
-					"E-mail"=> $this->emailAddress, 
-					"FirstName"=> $this->firstName, 
-					"LastName"=> $this->lastName, 
-					"companyAddress"=> $this->companyAddress, 
-					"city"=> $this->city, 
-					"state"=> $this->state, 
-					"phone"=> $this->phone,
-					"Zipcode"=> $this->zipCode, 
-					"feedbackType"=> $this->feedbackType, 
-					"feedback"=> $this->feedback, 
-				) 
-		);
-		return $this->CURLProcessBearer($this->ACTONUPSERTCONTACTURL.$this->emailAddress, "PUT", $data); 
+	function upsertContactQuestion(){
+		if($this->subscribe){// If the user checked the subscribe checkbox - if the subscribe has a value
+				$data =  json_encode(
+					array( 
+						"E-mail"=> $this->emailAddress, 
+						"FirstName"=> $this->firstName, 
+						"LastName"=> $this->lastName, 
+						"companyAddress"=> $this->companyAddress, 
+						"city"=> $this->city, 
+						"state"=> $this->state, 
+						"phone"=> $this->phone,
+						"Zipcode"=> $this->zipCode,   
+					) 
+			);
+			return $this->CURLProcessBearer($this->ACTONUPSERTCONTACTURL.$this->emailAddress, "PUT", $data);
+		}
+		 
 	}
 	
-	function upsertContactQuestion(){
+	function upsertContactSubscribe(){
 		
 		$data =  json_encode(
 				array( 
@@ -177,14 +177,14 @@ class ActonAPI{
 $acton = new ActonAPI;
 
  
-if( isset($_GET['process']) && $_GET['process'] === "subscribe" ){
-	echo $acton->upsertContactSubscribe();
-}
- 
-
-if ( isset($_GET['process']) && $_GET['process'] === "question"){
-   echo $acton->upsertContactQuestion(); 
-} 
+//if( isset($_GET['process']) && $_GET['process'] === "subscribe" ){
+//	echo $acton->upsertContactSubscribe();
+//}
+// 
+//
+//if ( isset($_GET['process']) && $_GET['process'] === "question"){
+//   echo $acton->upsertContactQuestion(); 
+//} 
 
  
 
